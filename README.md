@@ -1,1 +1,335 @@
-# eco-store
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>ЭкоМаркет – Эко-продукты</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f0fdf4;
+      color: #333;
+    }
+    header {
+      background-color: #4caf50;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    nav a {
+      color: white;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #c8e6c9;
+    }
+    .container {
+      padding: 20px;
+    }
+    h2 {
+      color: #2e7d32;
+    }
+    .search-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .search-filter input[type="text"] {
+      padding: 10px;
+      flex: 1;
+      min-width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .search-filter .category-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .search-filter .category-buttons button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background-color: #81c784;
+      color: white;
+      cursor: pointer;
+    }
+    .search-filter .category-buttons button.active {
+      background-color: #4caf50;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .product img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+    .product p {
+      margin: 5px 0;
+    }
+    .product button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #81c784;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .cart {
+      background-color: #ffffff;
+      padding: 20px;
+      border: 2px solid #c8e6c9;
+      border-radius: 10px;
+      margin-top: 40px;
+    }
+    .cart ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .cart li {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+    .cart li button {
+      background: transparent;
+      color: red;
+      border: none;
+      cursor: pointer;
+    }
+    form input, form textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    form button {
+      background-color: #4caf50;
+      color: white;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+    }
+    footer {
+      background: #e8f5e9;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="https://img.icons8.com/emoji/48/seedling.png" alt="logo">
+    ЭкоМаркет
+  </div>
+  <nav>
+    <a href="#products">Товары</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2 id="products">Наши товары</h2>
+  <div class="search-filter">
+    <input type="text" id="searchInput" placeholder="Поиск по товарам..." onkeyup="filterProducts()" />
+    <div class="category-buttons">
+      <button onclick="filterCategory('all')" class="active">Все</button>
+      <button onclick="filterCategory('fruits')">Фрукты</button>
+      <button onclick="filterCategory('vegetables')">Овощи</button>
+      <button onclick="filterCategory('dairy')">Молочные</button>
+      <button onclick="filterCategory('beverages')">Напитки</button>
+      <button onclick="filterCategory('nuts')">Орехи</button>
+    </div>
+  </div>
+  <div class="products" id="productList">
+    <!-- Пример товаров -->
+    <div class="product" data-category="fruits">
+      <img src="https://via.placeholder.com/150?text=Яблоки" alt="Органические яблоки">
+      <h3>Органические яблоки</h3>
+      <p>500 руб / кг</p>
+      <button onclick="addToCart('Органические яблоки')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="vegetables">
+      <img src="https://via.placeholder.com/150?text=Огурцы" alt="Огурцы">
+      <h3>Огурцы свежие</h3>
+      <p>200 руб / кг</p>
+      <button onclick="addToCart('Огурцы свежие')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="dairy">
+      <img src="https://via.placeholder.com/150?text=Молоко" alt="Молоко">
+      <h3>Молоко органическое</h3>
+      <p>80 руб / литр</p>
+      <button onclick="addToCart('Молоко органическое')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="beverages">
+      <img src="https://via.placeholder.com/150?text=Сок" alt="Органический сок">
+      <h3>Сок яблочный органический</h3>
+      <p>150 руб / литр</p>
+      <button onclick="addToCart('Сок яблочный органический')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="nuts">
+      <img src="https://via.placeholder.com/150?text=Орехи" alt="Орехи миндаль">
+      <h3>Миндаль органический</h3>
+      <p>600 руб / кг</p>
+      <button onclick="addToCart('Миндаль органический')">В корзину</button>
+    </div>
+
+    <!-- Новые товары -->
+    <div class="product" data-category="fruits">
+      <img src="https://via.placeholder.com/150?text=Бананы" alt="Органические бананы">
+      <h3>Органические бананы</h3>
+      <p>450 руб / кг</p>
+      <button onclick="addToCart('Органические бананы')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="vegetables">
+      <img src="https://via.placeholder.com/150?text=Помидоры" alt="Помидоры">
+      <h3>Помидоры свежие</h3>
+      <p>300 руб / кг</p>
+      <button onclick="addToCart('Помидоры свежие')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="dairy">
+      <img src="https://via.placeholder.com/150?text=Творог" alt="Творог органический">
+      <h3>Творог органический</h3>
+      <p>120 руб / 250 г</p>
+      <button onclick="addToCart('Творог органический')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="beverages">
+      <img src="https://via.placeholder.com/150?text=Чай" alt="Зеленый чай">
+      <h3>Зеленый чай органический</h3>
+      <p>100 руб / 50 г</p>
+      <button onclick="addToCart('Зеленый чай органический')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="nuts">
+      <img src="https://via.placeholder.com/150?text=Кешью" alt="Орехи кешью">
+      <h3>Орехи кешью органические</h3>
+      <p>800 руб / кг</p>
+      <button onclick="addToCart('Орехи кешью органические')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="fruits">
+      <img src="https://via.placeholder.com/150?text=Груши" alt="Органические груши">
+      <h3>Органические груши</h3>
+      <p>400 руб / кг</p>
+      <button onclick="addToCart('Органические груши')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="vegetables">
+      <img src="https://via.placeholder.com/150?text=Морковь" alt="Морковь">
+      <h3>Морковь свежая</h3>
+      <p>150 руб / кг</p>
+      <button onclick="addToCart('Морковь свежая')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="dairy">
+      <img src="https://via.placeholder.com/150?text=Кефир" alt="Кефир органический">
+      <h3>Кефир органический</h3>
+      <p>90 руб / литр</p>
+      <button onclick="addToCart('Кефир органический')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="beverages">
+      <img src="https://via.placeholder.com/150?text=Минералка" alt="Минеральная вода">
+      <h3>Минеральная вода</h3>
+      <p>50 руб / 500 мл</p>
+      <button onclick="addToCart('Минеральная вода')">В корзину</button>
+    </div>
+
+    <div class="product" data-category="nuts">
+      <img src="https://via.placeholder.com/150?text=Фисташки" alt="Фисташки">
+      <h3>Фисташки органические</h3>
+      <p>950 руб / кг</p>
+      <button onclick="addToCart('Фисташки органические')">В корзину</button>
+    </div>
+  </div>
+
+  <div class="cart" id="cart">
+    <h3>🛒 Ваша корзина</h3>
+    <ul id="cart-items">
+      <li>Корзина пуста</li>
+    </ul>
+
+    <form action="https://formspree.io/f/your-id" method="POST" onsubmit="return prepareOrder();">
+      <h4>📦 Оформление заказа</h4>
+      <input type="text" name="Имя" placeholder="Ваше имя" required>
+      <input type="tel" name="Телефон" placeholder="Телефон" required>
+      <textarea name="Адрес" placeholder="Адрес доставки" rows="3" required></textarea>
+      <input type="hidden" name="Товары" id="order-products">
+      <button type="submit">Оформить заказ</button>
+    </form>
+  </div>
+</div>
+
+<footer id="contacts">
+  <p>📧 info@ecomarket.ru | 📞 +7 (999) 123-45-67</p>
+  <p>© 2025 ЭкоМаркет</p>
+</footer>
+
+<script>
+  let cartItems = [];
+
+  function saveCart() {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }
+
+  function loadCart() {
+    const saved = localStorage.getItem('cartItems');
+    if (saved) {
+      cartItems = JSON.parse(saved);
+    }
+    updateCartDisplay();
+  }
+
+  function updateCartDisplay() {
+    const list = document.getElementById('cart-items');
+    list.innerHTML = '';
+    if (cartItems.length === 0) {
+      list.innerHTML = '<li>Корзина пуста</li>';
+    } else {
+      cartItems.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        const btn
