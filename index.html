@@ -1,4 +1,5 @@
 <<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -178,7 +179,7 @@
     </div>
   </div>
   <div class="products" id="productList">
-    <!-- Пример товаров -->
+    <!-- Пример товаров с изображениями -->
     <div class="product" data-category="fruits">
       <img src="https://via.placeholder.com/150?text=Яблоки" alt="Органические яблоки">
       <h3>Органические яблоки</h3>
@@ -249,41 +250,6 @@
       <p>800 руб / кг</p>
       <button onclick="addToCart('Орехи кешью органические')">В корзину</button>
     </div>
-
-    <div class="product" data-category="fruits">
-      <img src="https://via.placeholder.com/150?text=Груши" alt="Органические груши">
-      <h3>Органические груши</h3>
-      <p>400 руб / кг</p>
-      <button onclick="addToCart('Органические груши')">В корзину</button>
-    </div>
-
-    <div class="product" data-category="vegetables">
-      <img src="https://via.placeholder.com/150?text=Морковь" alt="Морковь">
-      <h3>Морковь свежая</h3>
-      <p>150 руб / кг</p>
-      <button onclick="addToCart('Морковь свежая')">В корзину</button>
-    </div>
-
-    <div class="product" data-category="dairy">
-      <img src="https://via.placeholder.com/150?text=Кефир" alt="Кефир органический">
-      <h3>Кефир органический</h3>
-      <p>90 руб / литр</p>
-      <button onclick="addToCart('Кефир органический')">В корзину</button>
-    </div>
-
-    <div class="product" data-category="beverages">
-      <img src="https://via.placeholder.com/150?text=Минералка" alt="Минеральная вода">
-      <h3>Минеральная вода</h3>
-      <p>50 руб / 500 мл</p>
-      <button onclick="addToCart('Минеральная вода')">В корзину</button>
-    </div>
-
-    <div class="product" data-category="nuts">
-      <img src="https://via.placeholder.com/150?text=Фисташки" alt="Фисташки">
-      <h3>Фисташки органические</h3>
-      <p>950 руб / кг</p>
-      <button onclick="addToCart('Фисташки органические')">В корзину</button>
-    </div>
   </div>
 
   <div class="cart" id="cart">
@@ -324,12 +290,72 @@
   }
 
   function updateCartDisplay() {
-    const list = document.getElementById('cart-items');
-    list.innerHTML = '';
+    const cartList = document.getElementById('cart-items');
+    cartList.innerHTML = '';
     if (cartItems.length === 0) {
-      list.innerHTML = '<li>Корзина пуста</li>';
+      cartList.innerHTML = '<li>Корзина пуста</li>';
     } else {
       cartItems.forEach((item, index) => {
         const li = document.createElement('li');
         li.textContent = item;
-        const btn
+        const btn = document.createElement('button');
+        btn.textContent = 'Удалить';
+        btn.onclick = () => removeFromCart(index);
+        li.appendChild(btn);
+        cartList.appendChild(li);
+      });
+    }
+  }
+
+  function addToCart(product) {
+    cartItems.push(product);
+    saveCart();
+    updateCartDisplay();
+  }
+
+  function removeFromCart(index) {
+    cartItems.splice(index, 1);
+    saveCart();
+    updateCartDisplay();
+  }
+
+  function filterProducts() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const products = document.querySelectorAll('.product');
+    products.forEach(product => {
+      const productName = product.querySelector('h3').textContent.toLowerCase();
+      if (productName.includes(searchInput)) {
+        product.style.display = '';
+      } else {
+        product.style.display = 'none';
+      }
+    });
+  }
+
+  function filterCategory(category) {
+    const products = document.querySelectorAll('.product');
+    document.querySelectorAll('.category-buttons button').forEach(button => {
+      button.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    products.forEach(product => {
+      if (category === 'all' || product.dataset.category === category) {
+        product.style.display = '';
+      } else {
+        product.style.display = 'none';
+      }
+    });
+  }
+
+  function prepareOrder() {
+    const orderProducts = document.getElementById('order-products');
+    orderProducts.value = cartItems.join(', ');
+    return true;
+  }
+
+  loadCart();
+</script>
+
+</body>
+</html>
